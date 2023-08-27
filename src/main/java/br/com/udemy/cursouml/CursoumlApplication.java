@@ -37,7 +37,7 @@ public class CursoumlApplication implements CommandLineRunner {
 	@Autowired
 	private CategoriaRepository categoriaRepository;	
 	@Autowired
-	private ProdutoRepository produtoRepository;	
+	private ProdutoRepository produtoRepository;
 	@Autowired
 	private EstadoRepository estadoRepository;	
 	@Autowired

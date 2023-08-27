@@ -8,8 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,6 +35,7 @@ public class Produto implements Serializable{
 	, inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias = new ArrayList<Categoria>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "itemPedidoPK.produto")
 	private Set<ItemPedido> itensPedidos = new HashSet<ItemPedido>();
 	
@@ -47,6 +48,7 @@ public class Produto implements Serializable{
 		this.preco = preco;
 	}
 	
+	@JsonIgnore
 	public List<Pedido> getPedidos() {
 		List<Pedido> lista = new ArrayList<Pedido>();
 		

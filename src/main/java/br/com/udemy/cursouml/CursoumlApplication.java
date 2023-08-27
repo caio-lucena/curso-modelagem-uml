@@ -13,6 +13,7 @@ import br.com.udemy.cursouml.domain.Cidade;
 import br.com.udemy.cursouml.domain.Cliente;
 import br.com.udemy.cursouml.domain.Endereco;
 import br.com.udemy.cursouml.domain.Estado;
+import br.com.udemy.cursouml.domain.ItemPedido;
 import br.com.udemy.cursouml.domain.Pagamento;
 import br.com.udemy.cursouml.domain.PagamentoComBoleto;
 import br.com.udemy.cursouml.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import br.com.udemy.cursouml.repositories.CidadeRepository;
 import br.com.udemy.cursouml.repositories.ClienteRepository;
 import br.com.udemy.cursouml.repositories.EnderecoRepository;
 import br.com.udemy.cursouml.repositories.EstadoRepository;
+import br.com.udemy.cursouml.repositories.ItemPedidoRepository;
 import br.com.udemy.cursouml.repositories.PagamentoRepository;
 import br.com.udemy.cursouml.repositories.PedidoRepository;
 import br.com.udemy.cursouml.repositories.ProdutoRepository;
@@ -33,29 +35,24 @@ import br.com.udemy.cursouml.repositories.ProdutoRepository;
 public class CursoumlApplication implements CommandLineRunner {
 
 	@Autowired
-	private CategoriaRepository categoriaRepository;
-	
+	private CategoriaRepository categoriaRepository;	
 	@Autowired
-	private ProdutoRepository produtoRepository;
-	
+	private ProdutoRepository produtoRepository;	
 	@Autowired
-	private EstadoRepository estadoRepository;
-	
+	private EstadoRepository estadoRepository;	
 	@Autowired
-	private CidadeRepository cidadeRepository;
-	
+	private CidadeRepository cidadeRepository;	
 	@Autowired
-	private ClienteRepository clienteRepository;
-	
+	private ClienteRepository clienteRepository;	
 	@Autowired
-	private EnderecoRepository enderecoRepository;
-	
+	private EnderecoRepository enderecoRepository;	
 	@Autowired
-	private PedidoRepository pedidoRepository;
-	
+	private PedidoRepository pedidoRepository;	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;	
-
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursoumlApplication.class, args);
 	}
@@ -119,6 +116,19 @@ public class CursoumlApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(pedido1, pedido2));
 		pagamentoRepository.saveAll(Arrays.asList(pagamento1, pagamento2));
+		
+		ItemPedido itemPedido1 = new ItemPedido(produto1, pedido1, 0.0, 1, 2000.0);
+		ItemPedido itemPedido2 = new ItemPedido(produto3, pedido1, 0.0, 2, 80.0);
+		ItemPedido itemPedido3 = new ItemPedido(produto2, pedido2, 100.0, 1, 800.0);
+		
+		pedido1.getItemPedidos().addAll(Arrays.asList(itemPedido1, itemPedido3));
+		pedido2.getItemPedidos().addAll(Arrays.asList(itemPedido2));
+		
+		produto1.getItensPedidos().addAll(Arrays.asList(itemPedido1));
+		produto2.getItensPedidos().addAll(Arrays.asList(itemPedido3));
+		produto3.getItensPedidos().addAll(Arrays.asList(itemPedido2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(itemPedido1, itemPedido2, itemPedido3));
 
 	}
 

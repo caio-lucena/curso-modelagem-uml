@@ -2,11 +2,14 @@ package br.com.udemy.cursouml.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Produto implements Serializable{	
@@ -31,6 +35,9 @@ public class Produto implements Serializable{
 	, inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias = new ArrayList<Categoria>();
 	
+	@OneToMany(mappedBy = "itemPedidoPK.produto")
+	private Set<ItemPedido> itensPedidos = new HashSet<ItemPedido>();
+	
 	public Produto() {}
 
 	public Produto(Integer id, String nome, Double preco) {
@@ -38,6 +45,15 @@ public class Produto implements Serializable{
 		this.id = id;
 		this.nome = nome;
 		this.preco = preco;
+	}
+	
+	public List<Pedido> getPedidos() {
+		List<Pedido> lista = new ArrayList<Pedido>();
+		
+		for(ItemPedido x: itensPedidos) {
+			lista.add(x.getPedido());
+		}
+		return lista;
 	}
 
 	public Integer getId() {
@@ -70,6 +86,14 @@ public class Produto implements Serializable{
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+	
+	public Set<ItemPedido> getItensPedidos() {
+		return itensPedidos;
+	}
+
+	public void setItensPedidos(Set<ItemPedido> itensPedidos) {
+		this.itensPedidos = itensPedidos;
 	}
 
 	@Override
